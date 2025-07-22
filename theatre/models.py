@@ -1,8 +1,18 @@
+import os
+import uuid
+from django.utils.text import slugify
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.test import TestCase
 
 User = get_user_model()
+
+
+def create_custom_path(instance, filename):
+    _, extension = os.path.splitext(filename)
+    return os.path.join(
+        "uploads/images/",
+        f"{slugify(instance.title)}-{uuid.uuid4()}{extension}",
+    )
 
 
 class Genre(models.Model):
@@ -25,6 +35,11 @@ class Play(models.Model):
     description = models.TextField()
     genres = models.ManyToManyField(Genre, related_name="plays")
     actors = models.ManyToManyField(Actor, related_name="plays")
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to=create_custom_path,
+    )
 
     def __str__(self):
         return self.title
@@ -44,8 +59,12 @@ class TheatreHall(models.Model):
 
 
 class Performance(models.Model):
-    play = models.ForeignKey(Play, on_delete=models.CASCADE, related_name="performances")
-    theatre_hall = models.ForeignKey(TheatreHall, on_delete=models.CASCADE, related_name="performances")
+    play = models.ForeignKey(
+        Play, on_delete=models.CASCADE, related_name="performances"
+    )
+    theatre_hall = models.ForeignKey(
+        TheatreHall, on_delete=models.CASCADE, related_name="performances"
+    )
     show_time = models.DateTimeField()
 
     def __str__(self):
@@ -53,8 +72,12 @@ class Performance(models.Model):
 
 
 class Reservation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reservations")
-    performance = models.ForeignKey(Performance, on_delete=models.CASCADE, related_name="reservations")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reservations"
+    )
+    performance = models.ForeignKey(
+        Performance, on_delete=models.CASCADE, related_name="reservations"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -62,7 +85,9 @@ class Reservation(models.Model):
 
 
 class Ticket(models.Model):
-    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name="tickets")
+    reservation = models.ForeignKey(
+        Reservation, on_delete=models.CASCADE, related_name="tickets"
+    )
     row = models.PositiveIntegerField()
     seat = models.PositiveIntegerField()
 
@@ -70,4 +95,7 @@ class Ticket(models.Model):
         unique_together = ("reservation", "row", "seat")
 
     def __str__(self):
-        return f"Ticket: row {self.row}, seat {self.seat} for reservation {self.reservation_id}"
+        return (
+            f"Ticket: row {self.row}, seat {self.seat} "
+            f"for reservation {self.reservation_id}"
+        )
