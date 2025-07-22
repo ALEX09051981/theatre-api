@@ -113,3 +113,9 @@ class ReservationSerializer(serializers.ModelSerializer):
             "tickets"
         )
         read_only_fields = ("user", "created_at")
+
+
+class PlayImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Play
+        fields = ("id", "image")
