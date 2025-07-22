@@ -9,7 +9,12 @@ User = get_user_model()
 
 class ReservationAPITests(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="testuser", password="12345678")
+        self.user = User.objects.create_user(
+            email="test@example.com",
+            password="12345678",
+            first_name="Test",
+            last_name="User"
+        )
         self.client.force_authenticate(user=self.user)
 
         genre = Genre.objects.create(name="Comedy")

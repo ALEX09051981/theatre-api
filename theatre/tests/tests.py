@@ -115,7 +115,12 @@ class PerformanceTests(TestCase):
 
 class TicketModelTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="testuser", password="pass")
+        self.user = User.objects.create_user(
+            email="test@example.com",
+            password="12345678",
+            first_name="Test",
+            last_name="User"
+        )
         self.play = Play.objects.create(title="Hamlet", description="Classic")
         self.theatre_hall = TheatreHall.objects.create(
             name="Main Hall", rows=10, seats_in_row=20
