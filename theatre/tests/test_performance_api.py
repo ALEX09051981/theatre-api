@@ -14,10 +14,17 @@ class PerformanceAPITests(APITestCase):
     def setUp(self):
         genre = Genre.objects.create(name="Drama")
         actor = Actor.objects.create(first_name="Kate", last_name="Winslet")
-        self.play = Play.objects.create(title="Romeo", description="Love story")
+        self.play = Play.objects.create(
+            title="Romeo",
+            description="Love story"
+        )
         self.play.genres.add(genre)
         self.play.actors.add(actor)
-        self.hall = TheatreHall.objects.create(name="Stage 1", rows=10, seats_in_row=10)
+        self.hall = TheatreHall.objects.create(
+            name="Stage 1",
+            rows=10,
+            seats_in_row=10
+        )
 
     def test_create_performance(self):
         url = reverse("theatre:performance-list")

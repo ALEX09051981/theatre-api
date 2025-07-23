@@ -30,7 +30,10 @@ class PlaySerializer(serializers.ModelSerializer):
 
     actors = ActorSerializer(many=True, read_only=True)
     actor_ids = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Actor.objects.all(), write_only=True, source="actors"
+        many=True,
+        queryset=Actor.objects.all(),
+        write_only=True,
+        source="actors"
     )
 
     class Meta:
