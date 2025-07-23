@@ -1,7 +1,12 @@
 from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
-from theatre.models import Performance, Play, TheatreHall, Genre, Actor
+from theatre.models import (
+    Play,
+    TheatreHall,
+    Genre,
+    Actor
+)
 from django.utils import timezone
 
 
@@ -19,7 +24,8 @@ class PerformanceAPITests(APITestCase):
         data = {
             "play_id": self.play.id,
             "theatre_hall_id": self.hall.id,
-            "show_time": (timezone.now() + timezone.timedelta(days=1)).isoformat(),
+            "show_time":
+                (timezone.now() + timezone.timedelta(days=1)).isoformat(),
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

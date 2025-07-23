@@ -1,7 +1,12 @@
 from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
-from theatre.models import Reservation, Performance, Play, TheatreHall, Genre, Actor
+from theatre.models import (Performance,
+                            Play,
+                            TheatreHall,
+                            Genre,
+                            Actor
+                            )
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 
@@ -24,7 +29,11 @@ class ReservationAPITests(APITestCase):
         play.genres.add(genre)
         play.actors.add(actor)
 
-        hall = TheatreHall.objects.create(name="Comedy Hall", rows=5, seats_in_row=5)
+        hall = TheatreHall.objects.create(
+            name="Comedy Hall",
+            rows=5,
+            seats_in_row=5
+        )
         self.performance = Performance.objects.create(
             play=play,
             theatre_hall=hall,

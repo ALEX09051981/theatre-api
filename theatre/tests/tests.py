@@ -75,12 +75,18 @@ class PlayTests(APITestCase):
 
 class ReservationTests(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='pass1234')
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='pass1234'
+        )
         self.client.force_authenticate(user=self.user)
 
         genre = Genre.objects.create(name='Drama')
         actor = Actor.objects.create(first_name='Tom', last_name='Hanks')
-        play = Play.objects.create(title='Hamlet', description='A classic play')
+        play = Play.objects.create(
+            title='Hamlet',
+            description='A classic play'
+        )
         play.genres.add(genre)
         play.actors.add(actor)
 
@@ -100,7 +106,10 @@ class PerformanceTests(TestCase):
         self.theatre_hall = TheatreHall.objects.create(
             name="Main Hall", rows=10, seats_in_row=20
         )
-        self.play = Play.objects.create(title="Hamlet", description="Classic play")
+        self.play = Play.objects.create(
+            title="Hamlet",
+            description="Classic play"
+        )
 
     def test_create_performance(self):
         show_time = timezone.now() + timezone.timedelta(days=1)
@@ -135,11 +144,16 @@ class TicketModelTests(TestCase):
         )
 
     def test_create_ticket(self):
-        ticket = Ticket.objects.create(reservation=self.reservation, row=1, seat=5)
+        ticket = Ticket.objects.create(
+            reservation=self.reservation,
+            row=1,
+            seat=5
+        )
         self.assertEqual(ticket.row, 1)
         self.assertEqual(ticket.seat, 5)
         self.assertEqual(
-            str(ticket), f"Ticket: row 1, seat 5 for reservation {self.reservation.id}"
+            str(ticket),
+            f"Ticket: row 1, seat 5 for reservation {self.reservation.id}"
         )
 
     def test_unique_together_constraint(self):
@@ -150,12 +164,20 @@ class TicketModelTests(TestCase):
 
 class TheatreHallModelTests(TestCase):
     def test_create_theatre_hall(self):
-        hall = TheatreHall.objects.create(name="Main Hall", rows=10, seats_in_row=20)
+        hall = TheatreHall.objects.create(
+            name="Main Hall",
+            rows=10,
+            seats_in_row=20
+        )
         self.assertEqual(hall.name, "Main Hall")
         self.assertEqual(hall.rows, 10)
         self.assertEqual(hall.seats_in_row, 20)
 
     def test_capacity_property(self):
-        hall = TheatreHall.objects.create(name="Main Hall", rows=5, seats_in_row=15)
+        hall = TheatreHall.objects.create(
+            name="Main Hall",
+            rows=5,
+            seats_in_row=15
+        )
         expected_capacity = 5 * 15
         self.assertEqual(hall.capacity, expected_capacity)
