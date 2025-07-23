@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -55,6 +56,25 @@ class PlayViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "str_parameter",
+                type=str,
+                description="First additional parameter…",
+                required=False,
+            ),
+            OpenApiParameter(
+                "list_parameter",
+                type={"type": "list", "items": {"type": "number"}},
+                description="Second additional parameter …"
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class TheatreHallViewSet(viewsets.ModelViewSet):
