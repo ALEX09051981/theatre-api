@@ -20,7 +20,8 @@ from .serializers import (
     TheatreHallSerializer,
     PerformanceSerializer,
     ReservationSerializer,
-    TicketSerializer, PlayImageSerializer,
+    TicketSerializer,
+    PlayImageSerializer,
 )
 
 
@@ -57,7 +58,6 @@ class PlayViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     @extend_schema(
         parameters=[
             OpenApiParameter(
@@ -69,8 +69,8 @@ class PlayViewSet(viewsets.ModelViewSet):
             OpenApiParameter(
                 "list_parameter",
                 type={"type": "list", "items": {"type": "number"}},
-                description="Second additional parameter …"
-            )
+                description="Second additional parameter …",
+            ),
         ]
     )
     def list(self, request, *args, **kwargs):
@@ -83,16 +83,14 @@ class TheatreHallViewSet(viewsets.ModelViewSet):
 
 
 class PerformanceViewSet(viewsets.ModelViewSet):
-    queryset = Performance.objects.select_related(
-        "play", "theatre_hall"
-    ).all()
+    queryset = Performance.objects.select_related("play", "theatre_hall").all()
     serializer_class = PerformanceSerializer
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
-    queryset = Reservation.objects.prefetch_related(
-        "tickets"
-    ).select_related("performance", "user")
+    queryset = Reservation.objects.prefetch_related("tickets").select_related(
+        "performance", "user"
+    )
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
 

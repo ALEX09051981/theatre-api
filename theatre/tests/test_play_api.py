@@ -3,6 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from theatre.models import Play, Genre, Actor
 
+
 class PlayAPITests(APITestCase):
     def setUp(self):
         self.genre = Genre.objects.create(name="Drama")
@@ -14,9 +15,8 @@ class PlayAPITests(APITestCase):
             "title": "Hamlet",
             "description": "Classic tragedy",
             "genre_ids": [self.genre.id],
-            "actor_ids": [self.actor.id]
+            "actor_ids": [self.actor.id],
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Play.objects.count(), 1)
-        

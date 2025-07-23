@@ -4,8 +4,13 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
 from theatre.models import (
-    Genre, Actor, Play, Performance,
-    Reservation, TheatreHall, Ticket
+    Genre,
+    Actor,
+    Play,
+    Performance,
+    Reservation,
+    TheatreHall,
+    Ticket,
 )
 from django.utils import timezone
 
@@ -70,9 +75,7 @@ class PlayTests(APITestCase):
 
 class ReservationTests(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username='testuser', password='pass1234'
-        )
+        self.user = User.objects.create_user(username='testuser', password='pass1234')
         self.client.force_authenticate(user=self.user)
 
         genre = Genre.objects.create(name='Drama')
@@ -88,7 +91,7 @@ class ReservationTests(APITestCase):
         self.performance = Performance.objects.create(
             play=play,
             theatre_hall=theatre_hall,
-            show_time=timezone.now() + timezone.timedelta(days=1)
+            show_time=timezone.now() + timezone.timedelta(days=1),
         )
 
 
@@ -102,15 +105,12 @@ class PerformanceTests(TestCase):
     def test_create_performance(self):
         show_time = timezone.now() + timezone.timedelta(days=1)
         performance = Performance.objects.create(
-            play=self.play,
-            theatre_hall=self.theatre_hall,
-            show_time=show_time
+            play=self.play, theatre_hall=self.theatre_hall, show_time=show_time
         )
         self.assertEqual(performance.play, self.play)
         self.assertEqual(performance.theatre_hall, self.theatre_hall)
         self.assertEqual(performance.show_time, show_time)
-        self.assertEqual(str(performance),
-                         f"{self.play.title} at {show_time}")
+        self.assertEqual(str(performance), f"{self.play.title} at {show_time}")
 
 
 class TicketModelTests(TestCase):
@@ -119,7 +119,7 @@ class TicketModelTests(TestCase):
             email="test@example.com",
             password="12345678",
             first_name="Test",
-            last_name="User"
+            last_name="User",
         )
         self.play = Play.objects.create(title="Hamlet", description="Classic")
         self.theatre_hall = TheatreHall.objects.create(
@@ -128,21 +128,18 @@ class TicketModelTests(TestCase):
         self.performance = Performance.objects.create(
             play=self.play,
             theatre_hall=self.theatre_hall,
-            show_time=timezone.now() + timezone.timedelta(days=1)
+            show_time=timezone.now() + timezone.timedelta(days=1),
         )
         self.reservation = Reservation.objects.create(
             user=self.user, performance=self.performance
         )
 
     def test_create_ticket(self):
-        ticket = Ticket.objects.create(
-            reservation=self.reservation, row=1, seat=5
-        )
+        ticket = Ticket.objects.create(reservation=self.reservation, row=1, seat=5)
         self.assertEqual(ticket.row, 1)
         self.assertEqual(ticket.seat, 5)
         self.assertEqual(
-            str(ticket),
-            f"Ticket: row 1, seat 5 for reservation {self.reservation.id}"
+            str(ticket), f"Ticket: row 1, seat 5 for reservation {self.reservation.id}"
         )
 
     def test_unique_together_constraint(self):
@@ -153,16 +150,12 @@ class TicketModelTests(TestCase):
 
 class TheatreHallModelTests(TestCase):
     def test_create_theatre_hall(self):
-        hall = TheatreHall.objects.create(
-            name="Main Hall", rows=10, seats_in_row=20
-        )
+        hall = TheatreHall.objects.create(name="Main Hall", rows=10, seats_in_row=20)
         self.assertEqual(hall.name, "Main Hall")
         self.assertEqual(hall.rows, 10)
         self.assertEqual(hall.seats_in_row, 20)
 
     def test_capacity_property(self):
-        hall = TheatreHall.objects.create(
-            name="Main Hall", rows=5, seats_in_row=15
-        )
+        hall = TheatreHall.objects.create(name="Main Hall", rows=5, seats_in_row=15)
         expected_capacity = 5 * 15
         self.assertEqual(hall.capacity, expected_capacity)

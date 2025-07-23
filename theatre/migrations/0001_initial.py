@@ -9,14 +9,21 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Actor',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('first_name', models.CharField(max_length=100)),
                 ('last_name', models.CharField(max_length=100)),
             ],
@@ -24,14 +31,30 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Genre',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=100, unique=True)),
             ],
         ),
         migrations.CreateModel(
             name='TheatreHall',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=100, unique=True)),
                 ('rows', models.PositiveIntegerField()),
                 ('seats_in_row', models.PositiveIntegerField()),
@@ -40,7 +63,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Ticket',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('row', models.PositiveIntegerField()),
                 ('seat', models.PositiveIntegerField()),
             ],
@@ -48,28 +79,79 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Play',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('title', models.CharField(max_length=255)),
                 ('description', models.TextField()),
-                ('image', models.ImageField(blank=True, null=True, upload_to=theatre.models.create_custom_path)),
-                ('actors', models.ManyToManyField(related_name='plays', to='theatre.actor')),
-                ('genres', models.ManyToManyField(related_name='plays', to='theatre.genre')),
+                (
+                    'image',
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to=theatre.models.create_custom_path,
+                    ),
+                ),
+                (
+                    'actors',
+                    models.ManyToManyField(related_name='plays', to='theatre.actor'),
+                ),
+                (
+                    'genres',
+                    models.ManyToManyField(related_name='plays', to='theatre.genre'),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='Performance',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('show_time', models.DateTimeField()),
-                ('play', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='performances', to='theatre.play')),
+                (
+                    'play',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='performances',
+                        to='theatre.play',
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='Reservation',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('performance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reservations', to='theatre.performance')),
+                (
+                    'performance',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='reservations',
+                        to='theatre.performance',
+                    ),
+                ),
             ],
         ),
     ]

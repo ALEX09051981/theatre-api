@@ -3,6 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from theatre.models import Actor
 
+
 class ActorAPITests(APITestCase):
     def test_create_actor(self):
         url = reverse('theatre:actor-list')
@@ -16,4 +17,3 @@ class ActorAPITests(APITestCase):
         url = reverse('theatre:actor-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        

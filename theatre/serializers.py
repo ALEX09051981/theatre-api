@@ -1,14 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import (
-    Genre,
-    Actor,
-    Play,
-    TheatreHall,
-    Performance,
-    Reservation,
-    Ticket
-)
+from .models import Genre, Actor, Play, TheatreHall, Performance, Reservation, Ticket
 
 User = get_user_model()
 
@@ -28,18 +20,12 @@ class ActorSerializer(serializers.ModelSerializer):
 class PlaySerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True, read_only=True)
     genre_ids = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Genre.objects.all(),
-        write_only=True,
-        source="genres"
+        many=True, queryset=Genre.objects.all(), write_only=True, source="genres"
     )
 
     actors = ActorSerializer(many=True, read_only=True)
     actor_ids = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Actor.objects.all(),
-        write_only=True,
-        source="actors"
+        many=True, queryset=Actor.objects.all(), write_only=True, source="actors"
     )
 
     class Meta:
@@ -51,7 +37,7 @@ class PlaySerializer(serializers.ModelSerializer):
             "genres",
             "genre_ids",
             "actors",
-            "actor_ids"
+            "actor_ids",
         )
 
 
@@ -65,16 +51,12 @@ class TheatreHallSerializer(serializers.ModelSerializer):
 class PerformanceSerializer(serializers.ModelSerializer):
     play = PlaySerializer(read_only=True)
     play_id = serializers.PrimaryKeyRelatedField(
-        queryset=Play.objects.all(),
-        source="play",
-        write_only=True
+        queryset=Play.objects.all(), source="play", write_only=True
     )
 
     theatre_hall = TheatreHallSerializer(read_only=True)
     theatre_hall_id = serializers.PrimaryKeyRelatedField(
-        queryset=TheatreHall.objects.all(),
-        source="theatre_hall",
-        write_only=True
+        queryset=TheatreHall.objects.all(), source="theatre_hall", write_only=True
     )
 
     class Meta:
@@ -85,7 +67,7 @@ class PerformanceSerializer(serializers.ModelSerializer):
             "play_id",
             "theatre_hall",
             "theatre_hall_id",
-            "show_time"
+            "show_time",
         )
 
 
@@ -98,20 +80,12 @@ class TicketSerializer(serializers.ModelSerializer):
 class ReservationSerializer(serializers.ModelSerializer):
     tickets = TicketSerializer(many=True, read_only=True)
     performance_id = serializers.PrimaryKeyRelatedField(
-        queryset=Performance.objects.all(),
-        source="performance",
-        write_only=True
+        queryset=Performance.objects.all(), source="performance", write_only=True
     )
 
     class Meta:
         model = Reservation
-        fields = (
-            "id",
-            "user",
-            "performance_id",
-            "created_at",
-            "tickets"
-        )
+        fields = ("id", "user", "performance_id", "created_at", "tickets")
         read_only_fields = ("user", "created_at")
 
 

@@ -18,17 +18,29 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='reservation',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reservations', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='reservations',
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
             model_name='performance',
             name='theatre_hall',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='performances', to='theatre.theatrehall'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='performances',
+                to='theatre.theatrehall',
+            ),
         ),
         migrations.AddField(
             model_name='ticket',
             name='reservation',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tickets', to='theatre.reservation'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='tickets',
+                to='theatre.reservation',
+            ),
         ),
         migrations.AlterUniqueTogether(
             name='ticket',
